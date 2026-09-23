@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Nimbus is a minimal general-purpose AI chat client: React + Vite frontend, Express API proxy, streamed replies." />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Nimbus · AI Chat</title>
+    <script>
+      // Sets the theme before the first paint so there is no flash of the wrong
+      // palette while React boots. Mirrors readInitialTheme() in
+      // src/hooks/useTheme.js: explicit choice first, otherwise the OS.
+      (function () {
+        try {
+          var stored = localStorage.getItem('nimbus.theme');
+          var theme =
+            stored === 'dark' || stored === 'light'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark';
+          document.documentElement.dataset.theme = theme;
+        } catch (error) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
