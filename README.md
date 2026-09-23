@@ -59,6 +59,29 @@ npm run build
 npm start                 # http://127.0.0.1:3001
 ```
 
+## Deploy to Vercel
+
+The Express API runs as a Vercel serverless function (`api/index.js`), the Vite
+build is served from Vercel's CDN, and streamed replies work over SSE. The
+config in `vercel.json` is picked up automatically — no framework or build
+settings need to be changed in the dashboard.
+
+1. Go to <https://vercel.com/new>, import the repo, and deploy once.
+2. Add the environment variable (Project → Settings → Environment Variables),
+   then redeploy:
+   - `NVIDIA_API_KEY` — required. Free key from <https://build.nvidia.com>.
+   - Optional: `NVIDIA_MODEL`, `SYSTEM_PROMPT`, `MAX_MESSAGE_CHARS`,
+     `MAX_CONTEXT_CHARS`, `MAX_MESSAGES`, `UPSTREAM_TIMEOUT_MS`.
+
+Notes:
+
+- The deployed app always uses the NVIDIA provider. Ollama only works when the
+  model runs on the same machine as the server, which is never true on Vercel,
+  so don't set `LLM_PROVIDER=ollama` there.
+- Vercel caps function duration at 300 s on the Hobby plan; the upstream
+  timeout defaults to 120 s, so a full streamed answer fits.
+- Every push to `main` redeploys automatically.
+
 Tests and build check:
 
 ```bash
